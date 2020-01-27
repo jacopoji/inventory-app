@@ -8,7 +8,6 @@ import {
     Button
 } from 'react-native';
 
-import Color from '../constants/Color';
 import Card from '../components/Card';
 
 import Company from '../Data/Company';
@@ -17,14 +16,14 @@ import TextBar from '../components/TextBar';
 const CompanyScreen = props => {
     const [addItem, setAddItem] = useState(0);
 
-    var companyData = Company.companyData.filter(
-        item => item.name == props.name
-    )[0];
-
     const pressHandler = item => {
         console.log(item);
-        props.handlePress(item);
+        props.navigation.navigate('Model', { modelNumber: item });
     };
+
+    var companyData = Company.companyData.filter(
+        item => item.name == props.navigation.getParam('name', 'default')
+    )[0];
 
     return (
         <View style={styles.container}>
@@ -47,8 +46,15 @@ const CompanyScreen = props => {
                                     </Text>
                                 </View>
                                 <View style={styles.bottomText}>
-                                    <Text style={styles.textStyle}>
-                                        剩余库存：{item.currentStock}
+                                    <Text
+                                        style={{
+                                            ...styles.textStyle,
+                                            ...(item.currentStockTotal == 0
+                                                ? { color: 'red' }
+                                                : { color: 'black' })
+                                        }}
+                                    >
+                                        剩余库存：{item.currentStockTotal}
                                     </Text>
                                 </View>
                             </Card>
@@ -64,7 +70,7 @@ const CompanyScreen = props => {
                 onPress={() => {
                     companyData.model.push({
                         number: 'ac123',
-                        currentStock: 111
+                        currentStockTotal: 111
                     });
                     setAddItem(addItem + 1);
                     console.log('Trying to push this in ' + addItem.toString);
@@ -73,6 +79,10 @@ const CompanyScreen = props => {
         </View>
     );
 };
+
+CompanyScreen.navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('name', 'Error')
+});
 
 const styles = StyleSheet.create({
     container: {
