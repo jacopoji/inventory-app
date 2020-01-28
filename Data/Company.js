@@ -4,7 +4,17 @@ export default {
             id: '0',
             name: 'Hua Long',
             model: [
-                { number: 'AX123', currentStockTotal: 5 },
+                {
+                    number: 'AX123',
+                    currentStocks: [
+                        { blue: { title: '蓝', stock: 30 } },
+                        { red: { title: '红', stock: 30 } },
+                        { white: { title: '白' }, stock: 20 }
+                    ],
+                    minPrice: 5.5,
+                    currPrice: 7,
+                    currentStockTotal: 5
+                },
                 { number: 'AX412', currentStockTotal: 2 },
                 { number: 'BX827', currentStockTotal: 0 },
                 { number: 'ZX23', currentStockTotal: 6 },

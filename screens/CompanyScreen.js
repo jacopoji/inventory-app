@@ -12,6 +12,7 @@ import Card from '../components/Card';
 
 import Company from '../Data/Company';
 import TextBar from '../components/TextBar';
+import Color from '../constants/Color';
 
 const CompanyScreen = props => {
     const [addItem, setAddItem] = useState(0);
@@ -19,6 +20,10 @@ const CompanyScreen = props => {
     const pressHandler = item => {
         console.log(item);
         props.navigation.navigate('Model', { modelNumber: item });
+    };
+
+    const handleAddItem = () => {
+        props.navigation.navigate('Modal');
     };
 
     var companyData = Company.companyData.filter(
@@ -76,18 +81,22 @@ const CompanyScreen = props => {
                     console.log('Trying to push this in ' + addItem.toString);
                 }}
             />
+            <Button title='Add Item(Real)' onPress={handleAddItem} />
         </View>
     );
 };
 
 CompanyScreen.navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('name', 'Error')
+    title: navigation.getParam('name', 'Error'),
+    headerBackTitle: ' '
 });
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        width: '100%'
+        justifyContent: 'flex-start',
+        flex: 1,
+        backgroundColor: Color.secondaryColor
     },
     textBar: {
         justifyContent: 'flex-start',

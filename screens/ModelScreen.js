@@ -2,43 +2,42 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 import Card from '../components/Card';
+import Block from '../components/Block';
+import Color from '../constants/Color';
 
 const ModelScreen = props => {
     return (
         <View style={styles.container}>
             <Card style={styles.cardContainer}>
-                {/* <View style={styles.itemContainer}> */}
                 <View style={styles.leftColumnContainer}>
-                    <View style={styles.blocks}>
-                        <Image></Image>
-                    </View>
-                    <View style={styles.blocks}></View>
+                    <Block></Block>
+                    <Block></Block>
                 </View>
                 <View style={styles.rightColumnContainer}>
-                    <View style={styles.blocks}></View>
-                    <View style={styles.blocks}></View>
-                    <View style={styles.blocks}></View>
+                    <Block></Block>
+                    <Block></Block>
+                    <Block></Block>
                 </View>
-                {/* </View> */}
             </Card>
         </View>
     );
 };
 
 ModelScreen.navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('modelNumber', 'Error')
+    title: navigation.getParam('modelNumber', 'Error'),
+    headerBackTitle: ' '
 });
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        flex: 1
+        justifyContent: 'flex-start',
+        flex: 1,
+        backgroundColor: Color.secondaryColor
     },
     cardContainer: {
-        // width: '90%',
-        // height: '60%'
         flex: 1,
-        marginVertical: 80,
+        marginVertical: 50,
         marginHorizontal: 20,
         flexDirection: 'row'
     },
@@ -55,14 +54,6 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '50%',
         flexDirection: 'column'
-    },
-    blocks: {
-        flex: 1,
-        borderRadius: 1,
-        borderWidth: 1,
-        borderColor: 'black',
-        height: '50%',
-        width: '100%'
     },
     rightColumnContainer: {
         flex: 1,
