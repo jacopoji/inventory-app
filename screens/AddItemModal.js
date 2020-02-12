@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import {
+    View,
+    Text,
+    TextInput,
+    StyleSheet,
+    Button,
+    AsyncStorage,
+    Picker
+} from 'react-native';
 
 import Card from '../components/Card';
 import Block from '../components/Block';
+//import AsyncStorage from '@react-native-community/async-storage';
 
 const AddItemModal = props => {
     const [modelNumber, setModelNumber] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [currPrice, setCurrPrice] = useState('');
     const [stock, setStock] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
 
     const dismissHandler = () => {
         props.navigation.goBack();
@@ -66,16 +76,34 @@ const AddItemModal = props => {
                 </View>
                 <View style={styles.stockContainer}>
                     <Text style={styles.fontStyle}>库存</Text>
-                    <TextInput
-                        style={styles.inputContainer}
-                        value={stock}
-                        onChangeText={text => {
-                            setStock(text);
+                    <View style={{ flexDirection: 'row' }}>
+                        <TextInput
+                            style={styles.stockInputContainer}
+                            value={stock}
+                            onChangeText={text => {
+                                setStock(text);
+                            }}
+                            placeholder='请输入库存'
+                            clearTextOnFocus={true}
+                            keyboardType='numeric'
+                        />
+                    </View>
+                    <Picker
+                        onValueChange={color => {
+                            setSelectedColor(color);
                         }}
-                        placeholder='请输入库存'
-                        clearTextOnFocus={true}
-                        keyboardType='numeric'
-                    />
+                        selectedValue={selectedColor}
+                        stlye={{
+                            width: 200,
+                            height: 200,
+                            backgroundColor: 'black'
+                        }}
+                    >
+                        <Picker.Item color='blue' label='蓝' value='blue' />
+                        <Picker.Item color='red' label='红' value='red' />
+                        <Picker.Item label='白' value='white' />
+                        <Picker.Item label='黑' value='black' />
+                    </Picker>
                 </View>
                 <View style={styles.buttonContainer}>
                     <Button title='确认' onPress={submitHandler} />
@@ -102,6 +130,14 @@ const styles = StyleSheet.create({
         minWidth: 250,
         fontSize: 30,
         maxWidth: 250
+    },
+    stockInputContainer: {
+        borderColor: 'grey',
+        borderWidth: 1,
+        minWidth: 100,
+        fontSize: 15,
+        maxWidth: 100,
+        maxHeight: 35
     },
     stockContainer: {
         marginVertical: 30,

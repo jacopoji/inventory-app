@@ -13,13 +13,13 @@ import { enableScreens } from 'react-native-screens';
 enableScreens();
 /*
 TODO:
-1.Provide color and number option in Modal screen, sample data regarding colors
+1.Provide color and number option in Modal screen, sample data regarding colors (deprecated)
 2.Implement Asynchronous approach with Promises
 3.Implement Image uploading via Camera or Library
 4.Implement search and filter function in MainScreen and CompanyScreen
 5.Implement sorting function by last edit date, remaining stock in CompanyScreen.
 6.Implement sorting function by Alphabet in MainScreen
-7.
+7.Database
 */
 const MainStack = createStackNavigator(
     {

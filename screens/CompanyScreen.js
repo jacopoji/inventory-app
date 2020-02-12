@@ -123,8 +123,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
     textStyle: {
-        fontSize: 18,
-        fontFamily: 'Times New Roman'
+        fontSize: 18
     }
 });
 
