@@ -5,7 +5,8 @@ import Color from './constants/Color';
 import MainScreen from './screens/MainScreen';
 import CompanyScreen from './screens/CompanyScreen';
 import ModelScreen from './screens/ModelScreen';
-import AddItemModal from './screens/AddItemModal';
+import AddModelScreen from './screens/AddModelScreen';
+import AddCompanyScreen from './screens/AddCompanyScreen';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -46,7 +47,8 @@ const MainStack = createStackNavigator(
 const RootStack = createStackNavigator(
     {
         Main: { screen: MainStack },
-        Modal: { screen: AddItemModal }
+        Modal: { screen: AddModelScreen },
+        CompanyModal: { screen: AddCompanyScreen }
     },
     {
         mode: 'modal',

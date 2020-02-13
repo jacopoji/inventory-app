@@ -26,10 +26,8 @@ const CompanyScreen = props => {
         props.navigation.navigate('Modal');
     };
 
-    var companyData = Company.companyData.filter(
-        item => item.name == props.navigation.getParam('name', 'default')
-    )[0];
-
+    var companyData = props.navigation.getParam('companyData', {})[0];
+    console.log(companyData);
     return (
         <View style={styles.container}>
             <View style={styles.textBar}>
@@ -54,12 +52,12 @@ const CompanyScreen = props => {
                                     <Text
                                         style={{
                                             ...styles.textStyle,
-                                            ...(item.currentStockTotal == 0
+                                            ...(item.currentStock == 0
                                                 ? { color: 'red' }
                                                 : { color: 'black' })
                                         }}
                                     >
-                                        剩余库存：{item.currentStockTotal}
+                                        剩余库存：{item.currentStock}
                                     </Text>
                                 </View>
                             </Card>

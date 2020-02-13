@@ -13,7 +13,7 @@ import Card from '../components/Card';
 import Block from '../components/Block';
 //import AsyncStorage from '@react-native-community/async-storage';
 
-const AddItemModal = props => {
+const AddModelScreen = props => {
     const [modelNumber, setModelNumber] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [currPrice, setCurrPrice] = useState('');
@@ -155,4 +155,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AddItemModal;
+export default AddModelScreen;
