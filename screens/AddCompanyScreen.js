@@ -20,11 +20,9 @@ const AddCompanyScreen = props => {
     const submitHandler = () => {
         sendData();
         // resetStates();
-        console.log(
-            props.navigation.getParam('handler', () => {
-                console.log('Empty function');
-            })
-        );
+        props.navigation.getParam('handler', () => {
+            console.log('Empty function');
+        });
         props.navigation.navigate('Home', {
             name: companyName,
             contact: companyContact

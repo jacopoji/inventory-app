@@ -8,6 +8,7 @@ import {
     Alert
 } from 'react-native';
 
+import { useFocusEffect } from 'expo-next-react-navigation';
 import Card from '../components/Card';
 import Color from '../constants/Color';
 // import Company from '../Data/Company';
@@ -65,6 +66,12 @@ const MainScreen = props => {
         console.log('Fetching data');
     }, []);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            getData();
+        }, [])
+    );
+
     const refreshHandler = () => {
         setRefreshing(true);
         getData().then(() => setRefreshing(false));
@@ -103,6 +110,7 @@ const MainScreen = props => {
                     )}
                     keyExtractor={item => item._id}
                     onRefresh={refreshHandler}
+                    onWillFocus={refreshHandler}
                     refreshing={refreshing}
                     renderHiddenItem={({ item }) => (
                         <View style={styles.rowBack}>
@@ -217,11 +225,7 @@ MainScreen.navigationOptions = ({ navigation }) => ({
             name='ios-add'
             size={32}
             color='white'
-            onPress={() =>
-                navigation.navigate('CompanyModal', {
-                    handler: addingCompanyHandler
-                })
-            }
+            onPress={() => navigation.navigate('CompanyModal')}
         />
     )
 });
