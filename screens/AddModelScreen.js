@@ -25,8 +25,36 @@ const AddModelScreen = props => {
     };
 
     const submitHandler = () => {
+        pushModel(companyId);
         props.navigation.goBack();
     };
+
+    var companyId = props.navigation.getParam('companyId');
+
+    async function pushModel(companyId) {
+        const data = {
+            modelData: {
+                number: modelNumber,
+                currentStock: stock,
+                primeCost: minPrice,
+                guidedPrice: currPrice
+            }
+        };
+        try {
+            const responst = await fetch(
+                `http://localhost:3000/Company/${companyId}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -88,7 +116,7 @@ const AddModelScreen = props => {
                             keyboardType='numeric'
                         />
                     </View>
-                    <Picker
+                    {/* <Picker
                         onValueChange={color => {
                             setSelectedColor(color);
                         }}
@@ -103,7 +131,7 @@ const AddModelScreen = props => {
                         <Picker.Item color='red' label='红' value='red' />
                         <Picker.Item label='白' value='white' />
                         <Picker.Item label='黑' value='black' />
-                    </Picker>
+                    </Picker> */}
                 </View>
                 <View style={styles.buttonContainer}>
                     <Button title='确认' onPress={submitHandler} />

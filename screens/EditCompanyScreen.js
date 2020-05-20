@@ -30,19 +30,17 @@ const EditCompanyScreen = props => {
 
     async function updateData(updateId) {
         const data = {
-            name: companyName
+            name: companyName,
+            companyId: updateId
         };
         try {
-            const responst = await fetch(
-                `http://localhost:3000/Company/${updateId}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-            );
+            const responst = await fetch(`http://localhost:3000/Company/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
         } catch (error) {
             console.error(error);
         }

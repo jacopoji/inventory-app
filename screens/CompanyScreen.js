@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import Card from '../components/Card';
+import { useFocusEffect } from 'expo-next-react-navigation';
 
 import Company from '../Data/Company';
 import TextBar from '../components/TextBar';
@@ -23,8 +24,10 @@ const CompanyScreen = props => {
     };
 
     const handleAddItem = () => {
-        props.navigation.navigate('Modal');
+        props.navigation.navigate('Modal', { companyId: companyData._id });
     };
+    //TODO: use usefocus hook to update company state
+    //      will need to also add a get request route to companyRoutes.js
 
     var companyData = props.navigation.getParam('companyData', {})[0];
     console.log(companyData);

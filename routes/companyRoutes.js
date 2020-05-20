@@ -27,13 +27,30 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.patch('/', async (req, res) => {
+    try {
+        const updatedCompany = await Company.updateOne(
+            { _id: req.body.companyId },
+            {
+                $set: {
+                    name: req.body.name
+                    //contact: req.body.contact //requires packet with name and contact
+                }
+            }
+        );
+        res.json(updatedCompany);
+    } catch (error) {
+        res.json(error);
+    }
+});
+
 router.patch('/:companyId', async (req, res) => {
     try {
         const updatedCompany = await Company.updateOne(
             { _id: req.params.companyId },
             {
-                $set: {
-                    name: req.body.name
+                $push: {
+                    model: req.body.modelData
                     //contact: req.body.contact //requires packet with name and contact
                 }
             }
