@@ -61,6 +61,23 @@ const MainScreen = props => {
         }
     }
 
+    async function updateData(updateId, data) {
+        try {
+            const responst = await fetch(
+                `http://localhost:3000/Company/${updateId}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
         getData();
         console.log('Fetching data');
@@ -114,14 +131,31 @@ const MainScreen = props => {
                     refreshing={refreshing}
                     renderHiddenItem={({ item }) => (
                         <View style={styles.rowBack}>
-                            <View
+                            {/* <View
                                 style={[
                                     styles.backRightBtn,
                                     styles.backRightBtnLeft
                                 ]}
                             >
                                 <Text style={styles.backTextWhite}>重命名</Text>
-                            </View>
+                            </View> */}
+                            <TouchableOpacity
+                                style={[
+                                    styles.backRightBtn,
+                                    styles.backRightBtnLeft
+                                ]}
+                                onPress={() =>
+                                    props.navigation.navigate(
+                                        'EditCompanyModal',
+                                        {
+                                            name: item.name,
+                                            id: item._id
+                                        }
+                                    )
+                                }
+                            >
+                                <Text style={styles.backTextWhite}>重命名</Text>
+                            </TouchableOpacity>
                             <TouchableOpacity
                                 style={[
                                     styles.backRightBtn,

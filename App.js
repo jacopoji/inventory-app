@@ -7,6 +7,7 @@ import CompanyScreen from './screens/CompanyScreen';
 import ModelScreen from './screens/ModelScreen';
 import AddModelScreen from './screens/AddModelScreen';
 import AddCompanyScreen from './screens/AddCompanyScreen';
+import EditCompanyScreen from './screens/EditCompanyScreen';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -48,7 +49,8 @@ const RootStack = createStackNavigator(
     {
         Main: { screen: MainStack },
         Modal: { screen: AddModelScreen },
-        CompanyModal: { screen: AddCompanyScreen }
+        CompanyModal: { screen: AddCompanyScreen },
+        EditCompanyModal: { screen: EditCompanyScreen }
     },
     {
         mode: 'modal',
