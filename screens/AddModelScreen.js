@@ -41,16 +41,19 @@ const AddModelScreen = props => {
             }
         };
         try {
-            const responst = await fetch(
-                `http://localhost:3000/Company/${companyId}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-            );
+            if (data.modelData.number) {
+                //make sure it has been entered
+                const responst = await fetch(
+                    `http://localhost:3000/Company/${companyId}`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                );
+            }
         } catch (error) {
             console.error(error);
         }

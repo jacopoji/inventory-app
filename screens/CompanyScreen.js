@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -17,6 +17,9 @@ import Color from '../constants/Color';
 
 const CompanyScreen = props => {
     const [addItem, setAddItem] = useState(0);
+    const [companyModel, setCompanyModel] = useState(
+        props.navigation.getParam('companyData', {})[0].model
+    );
 
     const pressHandler = item => {
         console.log(item);
@@ -29,8 +32,33 @@ const CompanyScreen = props => {
     //TODO: use usefocus hook to update company state
     //      will need to also add a get request route to companyRoutes.js
 
+    async function getData() {
+        try {
+            const response = await fetch(
+                `http://localhost:3000/Company/${companyData._id}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            const data = await response.json();
+            setCompanyModel(data[0].model);
+        } catch (error) {
+            console.error(error);
+        }
+        // console.log(companyData._id);
+    }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getData();
+        }, [])
+    );
+
     var companyData = props.navigation.getParam('companyData', {})[0];
-    console.log(companyData);
+    //console.log(companyData);
     return (
         <View style={styles.container}>
             <View style={styles.textBar}>
@@ -40,7 +68,7 @@ const CompanyScreen = props => {
             </View>
             <View style={styles.listStyle}>
                 <FlatList
-                    data={companyData.model}
+                    data={companyModel}
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => pressHandler(item.number)}

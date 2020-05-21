@@ -12,6 +12,18 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:companyId', async (req, res) => {
+    try {
+        const models = await Company.find(
+            { _id: req.params.companyId },
+            { model: 1, _id: 0 }
+        );
+        res.json(models);
+    } catch (error) {
+        res.status(404).send(error);
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const company = new Company({

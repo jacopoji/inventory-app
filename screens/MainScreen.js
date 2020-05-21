@@ -61,22 +61,22 @@ const MainScreen = props => {
         }
     }
 
-    async function updateData(updateId, data) {
-        try {
-            const responst = await fetch(
-                `http://localhost:3000/Company/${updateId}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-            );
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    // async function updateData(updateId, data) {
+    //     try {
+    //         const responst = await fetch(
+    //             `http://localhost:3000/Company/${updateId}`,
+    //             {
+    //                 method: 'PATCH',
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 },
+    //                 body: JSON.stringify(data)
+    //             }
+    //         );
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
     useEffect(() => {
         getData();
