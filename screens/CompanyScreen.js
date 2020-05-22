@@ -5,7 +5,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     FlatList,
-    Button
+    Button,
+    Alert
 } from 'react-native';
 
 import Card from '../components/Card';
@@ -26,11 +27,47 @@ const CompanyScreen = props => {
         props.navigation.navigate('Model', { modelNumber: item });
     };
 
+    const longPressHandler = item => {
+        console.log(item);
+        Alert.alert(`确认删除 ${item.number} 吗？`, '', [
+            {
+                text: '取消',
+                onPress: () => console.log(item._id),
+                style: 'cancel'
+            },
+            {
+                text: '确认',
+                onPress: () => {
+                    deleteModel(item._id);
+                },
+                style: 'destructive'
+            }
+        ]);
+    };
+
     const handleAddItem = () => {
         props.navigation.navigate('Modal', { companyId: companyData._id });
     };
-    //TODO: use usefocus hook to update company state
-    //      will need to also add a get request route to companyRoutes.js
+    //TODO:
+    //      PATCH request and modify button for models
+
+    async function deleteModel(modelId) {
+        try {
+            const response = await fetch(
+                `http://localhost:3000/Company/${companyData._id}/${modelId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            const data = await response.json();
+            getData();
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     async function getData() {
         try {
@@ -72,6 +109,7 @@ const CompanyScreen = props => {
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => pressHandler(item.number)}
+                            onLongPress={() => longPressHandler(item)}
                         >
                             <Card style={styles.entry}>
                                 <View style={styles.topText}>
