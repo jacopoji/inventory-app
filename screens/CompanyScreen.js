@@ -15,9 +15,12 @@ import { useFocusEffect } from 'expo-next-react-navigation';
 import Company from '../Data/Company';
 import TextBar from '../components/TextBar';
 import Color from '../constants/Color';
+import Footer from '../components/Footer';
+import { Ionicons } from '@expo/vector-icons';
 
 const CompanyScreen = props => {
     const [addItem, setAddItem] = useState(0);
+    const [multiSelectMode, setMultiSelectMode] = useState(false);
     const [companyModel, setCompanyModel] = useState(
         props.navigation.getParam('companyData', {})[0].model
     );
@@ -28,26 +31,27 @@ const CompanyScreen = props => {
     };
 
     const longPressHandler = item => {
-        console.log(item);
-        Alert.alert(`确认删除 ${item.number} 吗？`, '', [
-            {
-                text: '取消',
-                onPress: () => console.log(item._id),
-                style: 'cancel'
-            },
-            {
-                text: '确认',
-                onPress: () => {
-                    deleteModel(item._id);
-                },
-                style: 'destructive'
-            }
-        ]);
+        // console.log(item);
+        // Alert.alert(`确认删除 ${item.number} 吗？`, '', [
+        //     {
+        //         text: '取消',
+        //         onPress: () => console.log(item._id),
+        //         style: 'cancel'
+        //     },
+        //     {
+        //         text: '确认',
+        //         onPress: () => {
+        //             deleteModel(item._id);
+        //         },
+        //         style: 'destructive'
+        //     }
+        // ]);
+        setMultiSelectMode(true);
     };
 
-    const handleAddItem = () => {
-        props.navigation.navigate('Modal', { companyId: companyData._id });
-    };
+    // const handleAddItem = () => {
+    //     props.navigation.navigate('Modal', { companyId: companyData._id });
+    // };
     //TODO:
     //      PATCH request and modify button for models
 
@@ -137,7 +141,7 @@ const CompanyScreen = props => {
                     windowSize={21}
                 />
             </View>
-            <Button
+            {/* <Button
                 title='Add Item'
                 onPress={() => {
                     companyData.model.push({
@@ -147,15 +151,41 @@ const CompanyScreen = props => {
                     setAddItem(addItem + 1);
                     console.log('Trying to push this in ' + addItem.toString);
                 }}
-            />
-            <Button title='Add Item(Real)' onPress={handleAddItem} />
+            /> */}
+            {/* <Button title='Add Item' onPress={handleAddItem} /> */}
+
+            {multiSelectMode && (
+                <Footer>
+                    <Text
+                        style={{
+                            color: Color.red,
+                            fontSize: 28
+                        }}
+                    >
+                        Delete
+                    </Text>
+                </Footer>
+            )}
         </View>
     );
 };
 
 CompanyScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('name', 'Error'),
-    headerBackTitle: ' '
+    headerBackTitle: ' ',
+    headerRight: () => (
+        <Ionicons
+            style={{ paddingRight: 20 }}
+            name='ios-add'
+            size={32}
+            color='white'
+            onPress={() =>
+                navigation.navigate('Modal', {
+                    companyId: navigation.getParam('companyData', {})[0]._id
+                })
+            }
+        />
+    )
 });
 
 const styles = StyleSheet.create({
@@ -166,13 +196,13 @@ const styles = StyleSheet.create({
         backgroundColor: Color.secondaryColor
     },
     textBar: {
-        justifyContent: 'flex-start',
         width: '100%'
     },
     listStyle: {
         paddingTop: 40,
-        height: '80%'
+        flex: 1
     },
+
     entry: {
         marginBottom: 20,
         marginHorizontal: 10,
