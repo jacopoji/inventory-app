@@ -5,6 +5,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     FlatList,
+    TouchableWithoutFeedback,
     Button,
     Alert
 } from 'react-native';
@@ -21,6 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 const CompanyScreen = props => {
     const [addItem, setAddItem] = useState(0);
     const [multiSelectMode, setMultiSelectMode] = useState(false);
+    const [elementSelected, setElementSelected] = useState([]);
     const [companyModel, setCompanyModel] = useState(
         props.navigation.getParam('companyData', {})[0].model
     );
@@ -99,8 +101,25 @@ const CompanyScreen = props => {
     );
 
     var companyData = props.navigation.getParam('companyData', {})[0];
+    const unselectedIcon = (
+        <Ionicons
+            style={{ paddingRight: 5 }}
+            name='ios-checkmark-circle-outline'
+            size={32}
+            color={Color.gray}
+            onPress={() => {}}
+        />
+    );
+    const selectedIcon = (
+        <Ionicons
+            style={{ paddingRight: 20 }}
+            name='ios-checkmark-circle'
+            size={32}
+            onPress={() => {}}
+        />
+    );
     //console.log(companyData);
-    return (
+    const defaultScreen = (
         <View style={styles.container}>
             <View style={styles.textBar}>
                 {companyData.contact != '' && (
@@ -142,50 +161,93 @@ const CompanyScreen = props => {
                 />
             </View>
             {/* <Button
-                title='Add Item'
-                onPress={() => {
-                    companyData.model.push({
-                        number: 'ac123',
-                        currentStockTotal: 111
-                    });
-                    setAddItem(addItem + 1);
-                    console.log('Trying to push this in ' + addItem.toString);
-                }}
-            /> */}
+            title='Add Item'
+            onPress={() => {
+                companyData.model.push({
+                    number: 'ac123',
+                    currentStockTotal: 111
+                });
+                setAddItem(addItem + 1);
+                console.log('Trying to push this in ' + addItem.toString);
+            }}
+        /> */}
             {/* <Button title='Add Item' onPress={handleAddItem} /> */}
-
-            {multiSelectMode && (
-                <Footer>
-                    <Text
-                        style={{
-                            color: Color.red,
-                            fontSize: 28
-                        }}
-                    >
-                        Delete
-                    </Text>
-                </Footer>
-            )}
         </View>
     );
+    const editScreen = (
+        <View style={styles.container}>
+            <View style={styles.textBar}>
+                {companyData.contact != '' && (
+                    <TextBar text={'联系方式：' + companyData.contact} />
+                )}
+            </View>
+            <View style={styles.listStyle}>
+                <FlatList
+                    data={companyModel}
+                    renderItem={({ item }) => (
+                        <TouchableWithoutFeedback
+                            onLongPress={() => longPressHandler(item)}
+                        >
+                            <Card style={styles.entry}>
+                                <View style={styles.topText}>
+                                    <Text style={styles.textStyle}>
+                                        型号：{item.number}
+                                    </Text>
+                                    {unselectedIcon}
+                                </View>
+
+                                <View style={styles.bottomText}>
+                                    <Text
+                                        style={{
+                                            ...styles.textStyle,
+                                            ...(item.currentStock == 0
+                                                ? { color: 'red' }
+                                                : { color: 'black' })
+                                        }}
+                                    >
+                                        剩余库存：{item.currentStock}
+                                    </Text>
+                                </View>
+                            </Card>
+                        </TouchableWithoutFeedback>
+                    )}
+                    keyExtractor={item => item.number}
+                    numColumns={2}
+                    windowSize={21}
+                />
+            </View>
+            <Footer>
+                <Text
+                    style={{
+                        color: Color.red,
+                        fontSize: 28
+                    }}
+                >
+                    Delete
+                </Text>
+            </Footer>
+        </View>
+    );
+    return multiSelectMode ? editScreen : defaultScreen;
 };
 
 CompanyScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('name', 'Error'),
     headerBackTitle: ' ',
-    headerRight: () => (
-        <Ionicons
-            style={{ paddingRight: 20 }}
-            name='ios-add'
-            size={32}
-            color='white'
-            onPress={() =>
-                navigation.navigate('Modal', {
-                    companyId: navigation.getParam('companyData', {})[0]._id
-                })
-            }
-        />
-    )
+    headerRight: () =>
+        !props.state.multiSelectMode && (
+            <Ionicons
+                style={{ paddingRight: 20 }}
+                name='ios-add'
+                size={32}
+                color='white'
+                onPress={() =>
+                    navigation.navigate('Modal', {
+                        companyId: navigation.getParam('companyData', {})[0]._id
+                    })
+                }
+            />
+        )
 });
 
 const styles = StyleSheet.create({
@@ -211,8 +273,9 @@ const styles = StyleSheet.create({
     },
     topText: {
         flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start'
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        flexDirection: 'row'
     },
     bottomText: {
         flex: 1,
