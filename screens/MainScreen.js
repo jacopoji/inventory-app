@@ -23,7 +23,8 @@ const MainScreen = props => {
     const pressHandler = name => {
         props.navigation.navigate('Company', {
             name: name,
-            companyData: companyData.filter(item => item.name == name)
+            companyData: companyData.filter(item => item.name == name),
+            multiSelectMode: false
         });
         console.log(name);
     };

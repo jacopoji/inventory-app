@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const CompanyScreen = props => {
     const [addItem, setAddItem] = useState(0);
+    const [dummy, setDummy] = useState(false);
     const [multiSelectMode, setMultiSelectMode] = useState(false);
     const [elementSelected, setElementSelected] = useState([]);
     const [companyModel, setCompanyModel] = useState(
@@ -48,7 +49,23 @@ const CompanyScreen = props => {
         //         style: 'destructive'
         //     }
         // ]);
+        props.navigation.setParams({ multiSelectMode: true });
         setMultiSelectMode(true);
+    };
+
+    const selectPressHandler = item => {
+        var temp = elementSelected;
+        const index = temp.indexOf(item._id);
+        if (index > -1) {
+            //item already in array
+            temp.splice(index, 1);
+        } else {
+            //item not in array
+            temp.push(item._id);
+        }
+        setElementSelected(temp);
+        setDummy(!dummy);
+        // console.log(elementSelected);
     };
 
     // const handleAddItem = () => {
@@ -107,17 +124,20 @@ const CompanyScreen = props => {
             name='ios-checkmark-circle-outline'
             size={32}
             color={Color.gray}
-            onPress={() => {}}
         />
     );
     const selectedIcon = (
         <Ionicons
-            style={{ paddingRight: 20 }}
+            style={{ paddingRight: 5 }}
             name='ios-checkmark-circle'
             size={32}
-            onPress={() => {}}
         />
     );
+    function itemInArray(item, array) {
+        const index = array.indexOf(item);
+        if (index > -1) return true;
+        return false;
+    }
     //console.log(companyData);
     const defaultScreen = (
         <View style={styles.container}>
@@ -187,28 +207,33 @@ const CompanyScreen = props => {
                     renderItem={({ item }) => (
                         <TouchableWithoutFeedback
                             onLongPress={() => longPressHandler(item)}
+                            onPress={() => selectPressHandler(item)}
                         >
-                            <Card style={styles.entry}>
-                                <View style={styles.topText}>
-                                    <Text style={styles.textStyle}>
-                                        型号：{item.number}
-                                    </Text>
-                                    {unselectedIcon}
-                                </View>
+                            <View>
+                                <Card style={styles.entry}>
+                                    <View style={styles.topText}>
+                                        <Text style={styles.textStyle}>
+                                            型号：{item.number}
+                                        </Text>
+                                        {itemInArray(item._id, elementSelected)
+                                            ? selectedIcon
+                                            : unselectedIcon}
+                                    </View>
 
-                                <View style={styles.bottomText}>
-                                    <Text
-                                        style={{
-                                            ...styles.textStyle,
-                                            ...(item.currentStock == 0
-                                                ? { color: 'red' }
-                                                : { color: 'black' })
-                                        }}
-                                    >
-                                        剩余库存：{item.currentStock}
-                                    </Text>
-                                </View>
-                            </Card>
+                                    <View style={styles.bottomText}>
+                                        <Text
+                                            style={{
+                                                ...styles.textStyle,
+                                                ...(item.currentStock == 0
+                                                    ? { color: 'red' }
+                                                    : { color: 'black' })
+                                            }}
+                                        >
+                                            剩余库存：{item.currentStock}
+                                        </Text>
+                                    </View>
+                                </Card>
+                            </View>
                         </TouchableWithoutFeedback>
                     )}
                     keyExtractor={item => item.number}
@@ -235,7 +260,7 @@ CompanyScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('name', 'Error'),
     headerBackTitle: ' ',
     headerRight: () =>
-        !props.state.multiSelectMode && (
+        !navigation.getParam('multiSelectMode') && (
             <Ionicons
                 style={{ paddingRight: 20 }}
                 name='ios-add'
