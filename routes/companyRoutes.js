@@ -83,6 +83,19 @@ router.delete('/:companyId', async (req, res) => {
         res.json(error);
     }
 });
+//TODO: merge the two functions below
+router.delete('/:companyId/multi', async (req, res) => {
+    try {
+        console.log(req.body.modelIds);
+        const modifiedModels = await Company.updateOne(
+            { _id: req.params.companyId },
+            { $pull: { model: { _id: { $in: req.body.modelIds } } } }
+        );
+        res.json(modifiedModels);
+    } catch (error) {
+        res.json(error);
+    }
+});
 
 router.delete('/:companyId/:modelId', async (req, res) => {
     try {

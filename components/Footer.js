@@ -22,11 +22,6 @@ const styles = StyleSheet.create({
         flex: 0.1,
         width: '100%',
         justifyContent: 'flex-end'
-    },
-    fontStyle: {
-        fontSize: 30,
-        textAlign: 'center',
-        color: Color.red
     }
 });
 

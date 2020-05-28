@@ -68,6 +68,27 @@ const CompanyScreen = props => {
         // console.log(elementSelected);
     };
 
+    const multiDeleteHandler = () => {
+        if (elementSelected.length > 0) {
+            Alert.alert(`确认删除多个型号吗？`, '', [
+                {
+                    text: '取消',
+                    style: 'cancel'
+                },
+                {
+                    text: '确认',
+                    onPress: () => {
+                        deleteMultiModel(elementSelected);
+                        setElementSelected([]);
+                    },
+                    style: 'destructive'
+                }
+            ]);
+        } else {
+            return;
+        }
+    };
+
     // const handleAddItem = () => {
     //     props.navigation.navigate('Modal', { companyId: companyData._id });
     // };
@@ -86,6 +107,25 @@ const CompanyScreen = props => {
                 }
             );
             const data = await response.json();
+            getData();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function deleteMultiModel(modelId) {
+        try {
+            const data = { modelIds: modelId };
+            const response = await fetch(
+                `http://localhost:3000/Company/${companyData._id}/multi`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
             getData();
         } catch (error) {
             console.error(error);
@@ -242,14 +282,47 @@ const CompanyScreen = props => {
                 />
             </View>
             <Footer>
-                <Text
-                    style={{
-                        color: Color.red,
-                        fontSize: 28
-                    }}
-                >
-                    Delete
-                </Text>
+                <View style={styles.footerStyle}>
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            console.log('Delete all selected');
+                            multiDeleteHandler();
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color:
+                                    elementSelected.length > 0
+                                        ? Color.red
+                                        : '#ffffff',
+                                fontSize: 28,
+                                width: '40%'
+                            }}
+                        >
+                            删除
+                            {elementSelected.length > 0
+                                ? '(' + elementSelected.length + ')'
+                                : ' '}
+                        </Text>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            setMultiSelectMode(false);
+                            props.navigation.setParams({
+                                multiSelectMode: false
+                            });
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: '#ffffff',
+                                fontSize: 28
+                            }}
+                        >
+                            完成
+                        </Text>
+                    </TouchableWithoutFeedback>
+                </View>
             </Footer>
         </View>
     );
@@ -309,6 +382,10 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontSize: 18
+    },
+    footerStyle: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     }
 });
 

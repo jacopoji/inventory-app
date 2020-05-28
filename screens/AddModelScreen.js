@@ -43,7 +43,7 @@ const AddModelScreen = props => {
         try {
             if (data.modelData.number) {
                 //make sure it has been entered
-                const responst = await fetch(
+                const response = await fetch(
                     `http://localhost:3000/Company/${companyId}`,
                     {
                         method: 'PATCH',
