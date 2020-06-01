@@ -49,6 +49,9 @@ const CompanyScreen = props => {
         //         style: 'destructive'
         //     }
         // ]);
+        var temp = elementSelected;
+        temp.push(item._id);
+        setElementSelected(temp);
         props.navigation.setParams({ multiSelectMode: true });
         setMultiSelectMode(true);
     };
@@ -153,7 +156,9 @@ const CompanyScreen = props => {
 
     useFocusEffect(
         React.useCallback(() => {
+            var temp = companyModel;
             getData();
+            console.log(companyModel);
         }, [])
     );
 
@@ -308,6 +313,7 @@ const CompanyScreen = props => {
                     <TouchableWithoutFeedback
                         onPress={() => {
                             setMultiSelectMode(false);
+                            setElementSelected([]);
                             props.navigation.setParams({
                                 multiSelectMode: false
                             });

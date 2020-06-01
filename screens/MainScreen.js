@@ -87,6 +87,7 @@ const MainScreen = props => {
     useFocusEffect(
         React.useCallback(() => {
             getData();
+            console.log(companyData);
         }, [])
     );
 
