@@ -16,7 +16,7 @@ enableScreens();
 /*
 TODO:
 1.Provide color and number option in Modal screen, sample data regarding colors (deprecated)
-2.Implement Asynchronous approach with Promises
+-----2.Implement Asynchronous approach with Promises-----
 3.Implement Image uploading via Camera or Library
 4.Implement search and filter function in MainScreen and CompanyScreen
 5.Implement sorting function by last edit date, remaining stock in CompanyScreen.
@@ -27,21 +27,21 @@ const MainStack = createStackNavigator(
     {
         Home: MainScreen,
         Company: CompanyScreen,
-        Model: ModelScreen
+        Model: ModelScreen,
     },
     {
         initialRouteName: 'Home',
         defaultNavigationOptions: {
             headerStyle: {
-                backgroundColor: Color.mediumBlue
+                backgroundColor: Color.mediumBlue,
             },
             headerTintColor: Color.white,
             headerTitleStyle: {
                 fontSize: 30,
-                textAlign: 'center'
+                textAlign: 'center',
             },
-            title: ' '
-        }
+            title: ' ',
+        },
     }
 );
 
@@ -50,11 +50,11 @@ const RootStack = createStackNavigator(
         Main: { screen: MainStack },
         Modal: { screen: AddModelScreen },
         CompanyModal: { screen: AddCompanyScreen },
-        EditCompanyModal: { screen: EditCompanyScreen }
+        EditCompanyModal: { screen: EditCompanyScreen },
     },
     {
         mode: 'modal',
-        headerMode: 'none'
+        headerMode: 'none',
     }
 );
 

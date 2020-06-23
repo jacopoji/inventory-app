@@ -10,6 +10,7 @@
         "eject": "expo eject"
     },
     "dependencies": {
+        "@expo/react-native-action-sheet": "^3.8.0",
         "@react-native-community/async-storage": "^1.7.1",
         "@react-native-community/async-storage-backend-legacy": "^2.0.0-rc.1",
         "@react-native-community/masked-view": "^0.1.6",
@@ -17,9 +18,11 @@
         "body-parser": "^1.19.0",
         "dotenv": "^8.2.0",
         "expo": "~36.0.0",
+        "expo-image-picker": "~8.0.1",
         "expo-next-react-navigation": "^0.0.26",
         "express": "^4.17.1",
         "mongoose": "^5.8.11",
+        "multer": "^1.4.2",
         "nodemon": "^2.0.2",
         "react": "~16.9.0",
         "react-dom": "~16.9.0",

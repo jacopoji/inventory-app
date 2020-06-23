@@ -7,7 +7,7 @@ import {
     FlatList,
     TouchableWithoutFeedback,
     Button,
-    Alert
+    Alert,
 } from 'react-native';
 
 import Card from '../components/Card';
@@ -18,8 +18,9 @@ import TextBar from '../components/TextBar';
 import Color from '../constants/Color';
 import Footer from '../components/Footer';
 import { Ionicons } from '@expo/vector-icons';
+import localIpAddress from '../constants/localIpAddress';
 
-const CompanyScreen = props => {
+const CompanyScreen = (props) => {
     const [addItem, setAddItem] = useState(0);
     const [dummy, setDummy] = useState(false);
     const [multiSelectMode, setMultiSelectMode] = useState(false);
@@ -27,13 +28,17 @@ const CompanyScreen = props => {
     const [companyModel, setCompanyModel] = useState(
         props.navigation.getParam('companyData', {})[0].model
     );
+    const localIp = localIpAddress.localIp;
 
-    const pressHandler = item => {
-        console.log(item);
-        props.navigation.navigate('Model', { modelNumber: item });
+    const pressHandler = (item) => {
+        //console.log(item);
+        props.navigation.navigate('Model', {
+            modelNumber: item.number,
+            modelData: item,
+        });
     };
 
-    const longPressHandler = item => {
+    const longPressHandler = (item) => {
         // console.log(item);
         // Alert.alert(`确认删除 ${item.number} 吗？`, '', [
         //     {
@@ -56,7 +61,7 @@ const CompanyScreen = props => {
         setMultiSelectMode(true);
     };
 
-    const selectPressHandler = item => {
+    const selectPressHandler = (item) => {
         var temp = elementSelected;
         const index = temp.indexOf(item._id);
         if (index > -1) {
@@ -76,7 +81,7 @@ const CompanyScreen = props => {
             Alert.alert(`确认删除多个型号吗？`, '', [
                 {
                     text: '取消',
-                    style: 'cancel'
+                    style: 'cancel',
                 },
                 {
                     text: '确认',
@@ -84,8 +89,8 @@ const CompanyScreen = props => {
                         deleteMultiModel(elementSelected);
                         setElementSelected([]);
                     },
-                    style: 'destructive'
-                }
+                    style: 'destructive',
+                },
             ]);
         } else {
             return;
@@ -101,12 +106,12 @@ const CompanyScreen = props => {
     async function deleteModel(modelId) {
         try {
             const response = await fetch(
-                `http://localhost:3000/Company/${companyData._id}/${modelId}`,
+                `http://${localIp}:3000/Company/${companyData._id}/${modelId}`,
                 {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 }
             );
             const data = await response.json();
@@ -120,13 +125,13 @@ const CompanyScreen = props => {
         try {
             const data = { modelIds: modelId };
             const response = await fetch(
-                `http://localhost:3000/Company/${companyData._id}/multi`,
+                `http://${localIp}:3000/Company/${companyData._id}/multi`,
                 {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(data),
                 }
             );
             getData();
@@ -138,12 +143,12 @@ const CompanyScreen = props => {
     async function getData() {
         try {
             const response = await fetch(
-                `http://localhost:3000/Company/${companyData._id}`,
+                `http://${localIp}:3000/Company/${companyData._id}`,
                 {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 }
             );
             const data = await response.json();
@@ -158,7 +163,7 @@ const CompanyScreen = props => {
         React.useCallback(() => {
             var temp = companyModel;
             getData();
-            console.log(companyModel);
+            //console.log(companyModel);
         }, [])
     );
 
@@ -196,7 +201,7 @@ const CompanyScreen = props => {
                     data={companyModel}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            onPress={() => pressHandler(item.number)}
+                            onPress={() => pressHandler(item)}
                             onLongPress={() => longPressHandler(item)}
                         >
                             <Card style={styles.entry}>
@@ -211,7 +216,7 @@ const CompanyScreen = props => {
                                             ...styles.textStyle,
                                             ...(item.currentStock == 0
                                                 ? { color: 'red' }
-                                                : { color: 'black' })
+                                                : { color: 'black' }),
                                         }}
                                     >
                                         剩余库存：{item.currentStock}
@@ -220,7 +225,7 @@ const CompanyScreen = props => {
                             </Card>
                         </TouchableOpacity>
                     )}
-                    keyExtractor={item => item.number}
+                    keyExtractor={(item) => item.number}
                     numColumns={2}
                     windowSize={21}
                 />
@@ -271,7 +276,7 @@ const CompanyScreen = props => {
                                                 ...styles.textStyle,
                                                 ...(item.currentStock == 0
                                                     ? { color: 'red' }
-                                                    : { color: 'black' })
+                                                    : { color: 'black' }),
                                             }}
                                         >
                                             剩余库存：{item.currentStock}
@@ -281,7 +286,7 @@ const CompanyScreen = props => {
                             </View>
                         </TouchableWithoutFeedback>
                     )}
-                    keyExtractor={item => item.number}
+                    keyExtractor={(item) => item.number}
                     numColumns={2}
                     windowSize={21}
                 />
@@ -290,7 +295,7 @@ const CompanyScreen = props => {
                 <View style={styles.footerStyle}>
                     <TouchableWithoutFeedback
                         onPress={() => {
-                            console.log('Delete all selected');
+                            //console.log('Delete all selected');
                             multiDeleteHandler();
                         }}
                     >
@@ -301,7 +306,7 @@ const CompanyScreen = props => {
                                         ? Color.red
                                         : '#ffffff',
                                 fontSize: 28,
-                                width: '40%'
+                                width: '40%',
                             }}
                         >
                             删除
@@ -315,14 +320,14 @@ const CompanyScreen = props => {
                             setMultiSelectMode(false);
                             setElementSelected([]);
                             props.navigation.setParams({
-                                multiSelectMode: false
+                                multiSelectMode: false,
                             });
                         }}
                     >
                         <Text
                             style={{
                                 color: '#ffffff',
-                                fontSize: 28
+                                fontSize: 28,
                             }}
                         >
                             完成
@@ -347,11 +352,12 @@ CompanyScreen.navigationOptions = ({ navigation }) => ({
                 color='white'
                 onPress={() =>
                     navigation.navigate('Modal', {
-                        companyId: navigation.getParam('companyData', {})[0]._id
+                        companyId: navigation.getParam('companyData', {})[0]
+                            ._id,
                     })
                 }
             />
-        )
+        ),
 });
 
 const styles = StyleSheet.create({
@@ -359,40 +365,40 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flex: 1,
-        backgroundColor: Color.secondaryColor
+        backgroundColor: Color.secondaryColor,
     },
     textBar: {
-        width: '100%'
+        width: '100%',
     },
     listStyle: {
         paddingTop: 40,
-        flex: 1
+        flex: 1,
     },
 
     entry: {
         marginBottom: 20,
         marginHorizontal: 10,
         width: 160,
-        height: 80
+        height: 80,
     },
     topText: {
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     bottomText: {
         flex: 1,
         justifyContent: 'flex-end',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     textStyle: {
-        fontSize: 18
+        fontSize: 18,
     },
     footerStyle: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
-    }
+        justifyContent: 'space-evenly',
+    },
 });
 
 export default CompanyScreen;

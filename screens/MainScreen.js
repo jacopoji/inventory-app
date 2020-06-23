@@ -5,7 +5,7 @@ import {
     View,
     TouchableOpacity,
     FlatList,
-    Alert
+    Alert,
 } from 'react-native';
 
 import { useFocusEffect } from 'expo-next-react-navigation';
@@ -14,28 +14,30 @@ import Color from '../constants/Color';
 // import Company from '../Data/Company';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Ionicons } from '@expo/vector-icons';
+import localIpAddress from '../constants/localIpAddress';
 
-const MainScreen = props => {
+const MainScreen = (props) => {
     const [companyData, setCompanyData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [addingCompany, setAddingCompany] = useState(false);
+    const localIp = localIpAddress.localIp;
 
-    const pressHandler = name => {
+    const pressHandler = (name) => {
         props.navigation.navigate('Company', {
             name: name,
-            companyData: companyData.filter(item => item.name == name),
-            multiSelectMode: false
+            companyData: companyData.filter((item) => item.name == name),
+            multiSelectMode: false,
         });
-        console.log(name);
+        //console.log(name);
     };
 
     async function getData() {
         try {
-            const response = await fetch('http://localhost:3000/Company', {
+            const response = await fetch(`http://${localIp}:3000/Company`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             });
             const data = await response.json();
             setCompanyData(data);
@@ -48,12 +50,12 @@ const MainScreen = props => {
     async function deleteData(deleteId) {
         try {
             const response = await fetch(
-                `http://localhost:3000/Company/${deleteId}`,
+                `http://${localIp}:3000/Company/${deleteId}`,
                 {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 }
             );
             const data = await response.json();
@@ -81,13 +83,13 @@ const MainScreen = props => {
 
     useEffect(() => {
         getData();
-        console.log('Fetching data');
+        //console.log('Fetching data');
     }, []);
 
     useFocusEffect(
         React.useCallback(() => {
             getData();
-            console.log(companyData);
+            //console.log(companyData);
         }, [])
     );
 
@@ -95,15 +97,15 @@ const MainScreen = props => {
         setRefreshing(true);
         getData().then(() => setRefreshing(false));
 
-        console.log('Refreshing data');
+        //console.log('Refreshing data');
     };
 
     const addingCompanyHandler = () => {
         setAddingCompany(!addingCompany);
-        console.log('Switching addingCompany state to' + addingCompany);
+        //console.log('Switching addingCompany state to' + addingCompany);
     };
 
-    const deleteCompany = deleteId => {
+    const deleteCompany = (deleteId) => {
         deleteData(deleteId);
         getData();
     };
@@ -127,7 +129,7 @@ const MainScreen = props => {
                             </TouchableOpacity>
                         </View>
                     )}
-                    keyExtractor={item => item._id}
+                    keyExtractor={(item) => item._id}
                     onRefresh={refreshHandler}
                     onWillFocus={refreshHandler}
                     refreshing={refreshing}
@@ -144,14 +146,14 @@ const MainScreen = props => {
                             <TouchableOpacity
                                 style={[
                                     styles.backRightBtn,
-                                    styles.backRightBtnLeft
+                                    styles.backRightBtnLeft,
                                 ]}
                                 onPress={() =>
                                     props.navigation.navigate(
                                         'EditCompanyModal',
                                         {
                                             name: item.name,
-                                            id: item._id
+                                            id: item._id,
                                         }
                                     )
                                 }
@@ -161,7 +163,7 @@ const MainScreen = props => {
                             <TouchableOpacity
                                 style={[
                                     styles.backRightBtn,
-                                    styles.backRightBtnRight
+                                    styles.backRightBtnRight,
                                 ]}
                                 onPress={() => {
                                     Alert.alert('确认删除？', '', [
@@ -169,16 +171,16 @@ const MainScreen = props => {
                                             text: '取消',
                                             onPress: () =>
                                                 console.log(item._id),
-                                            style: 'cancel'
+                                            style: 'cancel',
                                         },
                                         {
                                             text: '确认',
                                             onPress: () => {
-                                                console.log(item._id);
+                                                //console.log(item._id);
                                                 deleteCompany(item._id);
                                             },
-                                            style: 'destructive'
-                                        }
+                                            style: 'destructive',
+                                        },
                                     ]);
                                 }}
                             >
@@ -207,19 +209,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flex: 1,
-        backgroundColor: Color.secondaryColor
+        backgroundColor: Color.secondaryColor,
     },
     cardContainer: {
         alignItems: 'stretch',
         justifyContent: 'center',
         width: '100%',
-        paddingTop: 50
+        paddingTop: 50,
     },
     entry: {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 2,
-        height: 60
+        height: 60,
     },
     rowBack: {
         alignItems: 'center',
@@ -227,7 +229,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 0,
         borderRadius: 6,
-        height: 60
+        height: 60,
     },
     backRightBtn: {
         alignItems: 'center',
@@ -236,21 +238,21 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         width: 75,
-        borderRadius: 6
+        borderRadius: 6,
     },
     backRightBtnLeft: {
         backgroundColor: 'blue',
         right: 75,
-        borderRadius: 6
+        borderRadius: 6,
     },
     backRightBtnRight: {
         backgroundColor: 'red',
         right: 0,
-        borderRadius: 6
+        borderRadius: 6,
     },
     backTextWhite: {
-        color: '#FFF'
-    }
+        color: '#FFF',
+    },
 });
 
 MainScreen.navigationOptions = ({ navigation }) => ({
@@ -263,7 +265,7 @@ MainScreen.navigationOptions = ({ navigation }) => ({
             color='white'
             onPress={() => navigation.navigate('CompanyModal')}
         />
-    )
+    ),
 });
 
 export default MainScreen;

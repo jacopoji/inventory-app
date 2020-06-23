@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 
 import Card from '../components/Card';
+import localIpAddress from '../constants/localIpAddress';
 
-const AddCompanyScreen = props => {
+const AddCompanyScreen = (props) => {
     const [companyName, setCompanyName] = useState('');
     const [companyContact, setCompanyContact] = useState('');
+    const localIp = localIpAddress.localIp;
 
     const dismissHandler = () => {
         resetStates();
@@ -25,22 +27,22 @@ const AddCompanyScreen = props => {
         });
         props.navigation.navigate('Home', {
             name: companyName,
-            contact: companyContact
+            contact: companyContact,
         });
     };
 
     async function sendData() {
         const data = {
             name: companyName,
-            contact: companyContact
+            contact: companyContact,
         };
         try {
-            const response = await fetch('http://localhost:3000/Company', {
+            const response = await fetch(`http://${localIp}:3000/Company`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
         } catch (error) {
             console.error(error);
@@ -55,7 +57,7 @@ const AddCompanyScreen = props => {
                     <TextInput
                         style={styles.inputContainer}
                         value={companyName}
-                        onChangeText={text => {
+                        onChangeText={(text) => {
                             setCompanyName(text);
                         }}
                         placeholder='请输入公司名称'
@@ -72,7 +74,7 @@ const AddCompanyScreen = props => {
                     <TextInput
                         style={styles.inputContainer}
                         value={companyContact}
-                        onChangeText={text => {
+                        onChangeText={(text) => {
                             setCompanyContact(text);
                         }}
                         placeholder='请输入联系方式'
@@ -93,24 +95,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        alignItems: 'stretch'
+        alignItems: 'stretch',
     },
     cardContainer: {
         marginHorizontal: 20,
-        paddingTop: 20
+        paddingTop: 20,
     },
     inputContainer: {
         borderColor: 'grey',
         borderWidth: 1,
         minWidth: 250,
         fontSize: 30,
-        maxWidth: 250
-    }
+        maxWidth: 250,
+    },
 });
 
 export default AddCompanyScreen;

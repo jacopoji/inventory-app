@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const Company = require('../schema/CompanySchema');
+var multer = require('multer');
 
+//*****************GET REQUESTS
 router.get('/', async (req, res) => {
     try {
         const companies = await Company.find();
@@ -24,12 +26,14 @@ router.get('/:companyId', async (req, res) => {
     }
 });
 
+//*****************POST REQUESTS
+
 router.post('/', async (req, res) => {
     try {
         const company = new Company({
             name: req.body.name,
             model: req.body.model,
-            contact: req.body.contact
+            contact: req.body.contact,
         });
 
         const savedCompany = await company.save();
@@ -45,9 +49,9 @@ router.patch('/', async (req, res) => {
             { _id: req.body.companyId },
             {
                 $set: {
-                    name: req.body.name
+                    name: req.body.name,
                     //contact: req.body.contact //requires packet with name and contact
-                }
+                },
             }
         );
         res.json(updatedCompany);
@@ -55,6 +59,8 @@ router.patch('/', async (req, res) => {
         res.json(error);
     }
 });
+
+//*********************PATCH REQUESTS
 
 router.patch('/:companyId', async (req, res) => {
     try {
@@ -62,9 +68,9 @@ router.patch('/:companyId', async (req, res) => {
             { _id: req.params.companyId },
             {
                 $push: {
-                    model: req.body.modelData
+                    model: req.body.modelData,
                     //contact: req.body.contact //requires packet with name and contact
-                }
+                },
             }
         );
         res.json(updatedCompany);
@@ -73,10 +79,11 @@ router.patch('/:companyId', async (req, res) => {
     }
 });
 
+//***********************DELETE REQUESTS
 router.delete('/:companyId', async (req, res) => {
     try {
         const deletedCompany = await Company.deleteOne({
-            _id: req.params.companyId
+            _id: req.params.companyId,
         });
         res.json(deletedCompany);
     } catch (error) {
@@ -86,7 +93,7 @@ router.delete('/:companyId', async (req, res) => {
 //TODO: merge the two functions below
 router.delete('/:companyId/multi', async (req, res) => {
     try {
-        console.log(req.body.modelIds);
+        //console.log(req.body.modelIds);
         const modifiedModels = await Company.updateOne(
             { _id: req.params.companyId },
             { $pull: { model: { _id: { $in: req.body.modelIds } } } }
@@ -108,4 +115,5 @@ router.delete('/:companyId/:modelId', async (req, res) => {
         res.json(error);
     }
 });
+
 module.exports = router;

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 
 import Card from '../components/Card';
+import localIpAddress from '../constants/localIpAddress';
 
 const EditCompanyScreen = props => {
     const [companyName, setCompanyName] = useState(
         props.navigation.getParam('name')
     );
+    const localIp = localIpAddress.localIp;
 
     const dismissHandler = () => {
         resetStates();
@@ -34,7 +36,7 @@ const EditCompanyScreen = props => {
             companyId: updateId
         };
         try {
-            const responst = await fetch(`http://localhost:3000/Company/`, {
+            const responst = await fetch(`http://${localIp}:3000/Company/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'

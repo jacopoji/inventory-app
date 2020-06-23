@@ -11,6 +11,7 @@ import {
 
 import Card from '../components/Card';
 import Block from '../components/Block';
+import localIpAddress from '../constants/localIpAddress';
 //import AsyncStorage from '@react-native-community/async-storage';
 
 const AddModelScreen = props => {
@@ -18,7 +19,7 @@ const AddModelScreen = props => {
     const [minPrice, setMinPrice] = useState('');
     const [currPrice, setCurrPrice] = useState('');
     const [stock, setStock] = useState('');
-    const [selectedColor, setSelectedColor] = useState('');
+    const localIp = localIpAddress.localIp;
 
     const dismissHandler = () => {
         props.navigation.goBack();
@@ -44,7 +45,7 @@ const AddModelScreen = props => {
             if (data.modelData.number) {
                 //make sure it has been entered
                 const response = await fetch(
-                    `http://localhost:3000/Company/${companyId}`,
+                    `http://${localIp}:3000/Company/${companyId}`,
                     {
                         method: 'PATCH',
                         headers: {
