@@ -15,9 +15,12 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Ionicons } from '@expo/vector-icons';
 import localIpAddress from '../constants/localIpAddress';
+import { Asset } from 'expo-asset';
 
 const ModelScreen = (props) => {
     const [image, setImage] = useState(null);
+    // const [uploadImageData, setUploadImageData] = useState(null);
+    const [shouldUpload, setShouldUplade] = useState(false);
     const localIp = localIpAddress.localIp;
 
     useEffect(() => {
@@ -27,12 +30,17 @@ const ModelScreen = (props) => {
             pickImage: _pickImage,
             takeImage: _takeImage,
         });
-        setImage(require('./images/8BC0327C-F48C-4FAA-A8C9-101FB5500C14.jpg'));
-        if (image != null) {
+        if (image == null) {
+            setImage(
+                require('../assets/photo_1592854176857_8BC0327C-F48C-4FAA-A8C9-101FB5500C14.jpg')
+            );
+        }
+        if (image != null && shouldUpload) {
             //console.log(image);
             uploadImage();
+            setShouldUplade(false);
         }
-        console.log('Running useEffect in ModelScreen.js');
+        console.log(image);
     }, [image]);
 
     getPermissionAsync = async () => {
@@ -57,7 +65,11 @@ const ModelScreen = (props) => {
                 quality: 1,
             });
             if (!result.cancelled) {
+                console.log('before' + image);
+                setShouldUplade(true);
                 setImage(result);
+                console.log('after' + image);
+                // setUploadImageData(result);
             }
 
             // console.log(result);
@@ -78,6 +90,7 @@ const ModelScreen = (props) => {
                 quality: 1,
             });
             if (!result.cancelled) {
+                setShouldUplade(true);
                 setImage(result);
             }
         } catch (error) {
@@ -161,7 +174,7 @@ const ModelScreen = (props) => {
 
                                 {image && (
                                     <Image
-                                        source={{ uri: image.uri }}
+                                        source={image}
                                         style={{
                                             width: '100%',
                                             height: '100%',
