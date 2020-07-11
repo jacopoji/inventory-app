@@ -116,4 +116,39 @@ router.delete('/:companyId/:modelId', async (req, res) => {
     }
 });
 
+//MULTER IMAGE UPLOAD
+var storage = multer.diskStorage({
+    destination(req, file, callback) {
+        callback(null, './images');
+    },
+    filename(req, file, callback) {
+        console.log(file);
+        callback(null, file.originalname); //fieldname -> originalname
+    },
+});
+
+var upload = multer({
+    limits: { fieldSize: 25 * 1024 * 1024 },
+    storage: storage,
+});
+
+router.post('/uploadImage', upload.array('photo'), (req, res) => {
+    console.log('Calling post to uploadImage');
+    try {
+        // console.log('file', req.files);
+        // console.log('body', req.body);
+        res.status(200).json({
+            message: 'success!',
+        });
+        console.log(req.files[0].path);
+        console.log(req.body.companyId);
+        //console.log('Success');
+    } catch (error) {
+        // console.log('file', req.files);
+        // console.log('body', req.body);
+        res.json(error);
+        //console.log('Error');
+    }
+});
+
 module.exports = router;

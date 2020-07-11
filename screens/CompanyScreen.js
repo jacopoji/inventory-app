@@ -35,7 +35,9 @@ const CompanyScreen = (props) => {
         props.navigation.navigate('Model', {
             modelNumber: item.number,
             modelData: item,
+            companyId: companyData._id,
         });
+        console.log('id is ' + companyData._id);
     };
 
     const longPressHandler = (item) => {

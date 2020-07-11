@@ -16,36 +16,31 @@ app.get('/', (req, res) => {
 });
 
 //MULTER IMAGE UPLOAD
-var storage = multer.diskStorage({
-    destination(req, file, callback) {
-        callback(null, 'images/');
-    },
-    filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
-    },
-});
+// var storage = multer.diskStorage({
+//     destination(req, file, callback) {
+//         callback(null, 'images/');
+//     },
+//     filename(req, file, callback) {
+//         callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
+//     },
+// });
 
-var upload = multer({
-    limits: { fieldSize: 25 * 1024 * 1024 },
-    storage: storage,
-});
+// var upload = multer({
+//     limits: { fieldSize: 25 * 1024 * 1024 },
+//     storage: storage,
+// });
 
-app.post('/uploadImage', upload.single('photo'), (req, res) => {
-    //console.log('Calling post to uploadImage');
-    try {
-        // console.log('file', req.files);
-        // console.log('body', req.body);
-        console.log('Successfully uploaded to' + upload);
-        res.status(200).json({
-            message: 'success!',
-        });
-    } catch (error) {
-        // console.log('file', req.files);
-        // console.log('body', req.body);
-        console.log('error');
-        res.json(error);
-    }
-});
+// app.post('/uploadImage', upload.single('photo'), (req, res) => {
+//     //console.log('Calling post to uploadImage');
+//     try {
+//         res.status(200).json({
+//             message: 'success!',
+//         });
+//     } catch (error) {
+//         console.log('error');
+//         res.json(error);
+//     }
+// });
 
 mongoose.connect(
     process.env.DB_CONNECTION,

@@ -32,7 +32,8 @@ const ModelScreen = (props) => {
         });
         if (image == null) {
             setImage(
-                require('../assets/photo_1592854176857_8BC0327C-F48C-4FAA-A8C9-101FB5500C14.jpg')
+                //require('../assets/photo_1592854176857_8BC0327C-F48C-4FAA-A8C9-101FB5500C14.jpg')
+                require('../images/CA9E1D94-94E7-4C96-9BDC-B8B306D2CA4B.jpg')
             );
         }
         if (image != null && shouldUpload) {
@@ -121,15 +122,19 @@ const ModelScreen = (props) => {
 
     async function uploadImage() {
         try {
-            const response = await fetch(`http://${localIp}:3000/uploadImage`, {
-                method: 'POST',
-                body: createFormData(image, { userId: '123112332' }),
-                headers: {
-                    enctype: 'multipart/form-data',
-                },
-            });
-            const data = response.json();
+            const response = await fetch(
+                `http://${localIp}:3000/company/uploadImage`,
+                {
+                    method: 'POST',
+                    body: createFormData(image, { companyId: companyId }),
+                    headers: {
+                        enctype: 'multipart/form-data',
+                    },
+                }
+            );
+            const data = response.text();
             console.log('upload succes', data);
+            console.log(companyId);
             alert('Upload success!');
             //setImage(null);
         } catch (error) {
@@ -156,6 +161,7 @@ const ModelScreen = (props) => {
     // };
 
     const modelData = props.navigation.getParam('modelData', {});
+    const companyId = props.navigation.getParam('companyId');
 
     return (
         <ActionSheetProvider>
