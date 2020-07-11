@@ -23,6 +23,9 @@ TODO:
 6.Implement sorting function by Alphabet in MainScreen
 7.Database
 */
+
+//to run app type: expo start
+//if network request failed error appears find local ip address and replace in localIpAdress.js
 const MainStack = createStackNavigator(
     {
         Home: MainScreen,

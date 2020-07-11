@@ -3,24 +3,29 @@ const mongoose = require('mongoose');
 const ModelSchema = mongoose.Schema({
     number: {
         type: String,
-        required: true
+        required: true,
     },
     currentStock: {
         type: Number,
-        required: true
+        required: true,
     },
     primeCost: {
         type: Number,
-        require: true
+        require: true,
     },
     guidedPrice: {
         type: Number,
-        require: true
+        require: true,
     },
     date: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
+    image: {
+        type: String,
+        required: false,
+        default: null,
+    },
 });
 
 module.exports = mongoose.model('Model', ModelSchema);
