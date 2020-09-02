@@ -176,15 +176,48 @@ const ModelScreen = (props) => {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <ActionSheet />
-
-                                {image && (
+                                {Platform.OS === 'android' ? (
+                                    <ActionSheet
+                                        pickImage={_pickImage}
+                                        takeImage={_takeImage}
+                                    >
+                                        {image ? (
+                                            <Image
+                                                source={image}
+                                                style={{
+                                                    width: 390,
+                                                    height: 320,
+                                                }}
+                                            />
+                                        ) : (
+                                            <Ionicons
+                                                style={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}
+                                                name='ios-camera'
+                                                size={32}
+                                                color='blue'
+                                            />
+                                        )}
+                                    </ActionSheet>
+                                ) : image ? (
                                     <Image
                                         source={image}
                                         style={{
                                             width: '100%',
                                             height: '100%',
                                         }}
+                                    />
+                                ) : (
+                                    <Ionicons
+                                        style={{
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                        name='ios-camera'
+                                        size={32}
+                                        color='blue'
                                     />
                                 )}
                             </View>
@@ -264,21 +297,22 @@ const ModelScreen = (props) => {
 ModelScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('modelNumber', 'Error'),
     headerBackTitle: ' ',
-    headerRight: () => (
-        <ActionSheetProvider>
-            <ActionSheet
-                pickImage={navigation.getParam('pickImage', 'error')}
-                takeImage={navigation.getParam('takeImage', 'error')}
-            >
-                <Ionicons
-                    style={{ paddingRight: 20 }}
-                    name='ios-camera'
-                    size={32}
-                    color='white'
-                />
-            </ActionSheet>
-        </ActionSheetProvider>
-    ),
+    headerRight: () =>
+        !(Platform.OS === 'android') && (
+            <ActionSheetProvider>
+                <ActionSheet
+                    pickImage={navigation.getParam('pickImage', 'error')}
+                    takeImage={navigation.getParam('takeImage', 'error')}
+                >
+                    <Ionicons
+                        style={{ paddingRight: 20 }}
+                        name='ios-camera'
+                        size={32}
+                        color='white'
+                    />
+                </ActionSheet>
+            </ActionSheetProvider>
+        ),
 });
 
 const styles = StyleSheet.create({

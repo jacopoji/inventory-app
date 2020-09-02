@@ -39,7 +39,7 @@ const ActionSheet = (props) => {
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={_openActionSheet}>
-                <View>{props.children}</View>
+                {props.children}
             </TouchableWithoutFeedback>
             {/* <Button title='Combined' onPress={_openActionSheet} /> */}
         </View>

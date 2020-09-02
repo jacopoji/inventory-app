@@ -11,6 +11,7 @@ import {
 import { useFocusEffect } from 'expo-next-react-navigation';
 import Card from '../components/Card';
 import Color from '../constants/Color';
+import SearchBar from '../components/SearchBar';
 // import Company from '../Data/Company';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Ionicons } from '@expo/vector-icons';
@@ -114,7 +115,10 @@ const MainScreen = (props) => {
         <View style={styles.container}>
             <View style={styles.cardContainer}>
                 <SwipeListView
-                    data={companyData}
+                    data={companyData.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    )}
+                    //data={partners.sort((a, b) => a.name.localeCompare(b.name))}
                     renderItem={({ item }) => (
                         <View style={{ backgroundColor: Color.shallowBlue }}>
                             <TouchableOpacity
@@ -193,6 +197,7 @@ const MainScreen = (props) => {
                     directionalDistanceChangeThreshold={4}
                     swipeToOpenPercent={70}
                     stopRightSwipe={-150}
+                    ListHeaderComponent={SearchBar}
                     onRowOpen={(rowKey, rowMap) => {
                         setTimeout(() => {
                             if (rowMap[rowKey]) rowMap[rowKey].closeRow();
@@ -215,7 +220,7 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'center',
         width: '100%',
-        paddingTop: 50,
+        paddingTop: 0,
     },
     entry: {
         alignItems: 'center',
