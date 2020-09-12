@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Button,
+    TextInput,
+    TouchableWithoutFeedback,
+    Keyboard,
+} from 'react-native';
 
 import Card from '../components/Card';
 import localIpAddress from '../constants/localIpAddress';
+
+import configuration from '../constants/configuration';
+const language = configuration.language;
 
 const AddCompanyScreen = (props) => {
     const [companyName, setCompanyName] = useState('');
@@ -50,45 +61,68 @@ const AddCompanyScreen = (props) => {
     }
 
     return (
-        <View style={styles.container}>
-            <Card>
-                <View style={styles.cardContainer}>
-                    <Text style={styles.fontStyle}>公司名称</Text>
-                    <TextInput
-                        style={styles.inputContainer}
-                        value={companyName}
-                        onChangeText={(text) => {
-                            setCompanyName(text);
-                        }}
-                        placeholder='请输入公司名称'
-                        autoCapitalize='characters'
-                        autoCompleteType='off'
-                        autoCorrect={false}
-                        autoFocus={true}
-                        clearTextOnFocus={true}
-                        keyboardType='default'
-                    />
-                </View>
-                <View style={styles.cardContainer}>
-                    <Text style={styles.fontStyle}>联系方式</Text>
-                    <TextInput
-                        style={styles.inputContainer}
-                        value={companyContact}
-                        onChangeText={(text) => {
-                            setCompanyContact(text);
-                        }}
-                        placeholder='请输入联系方式'
-                        clearTextOnFocus={true}
-                        keyboardType='numeric'
-                    />
-                </View>
-                <View style={styles.buttonContainer}>
-                    <Button title='确认' onPress={submitHandler} />
-                    <Button title='取消' onPress={dismissHandler} />
-                </View>
-            </Card>
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.container}>
+                <Card>
+                    <View style={styles.cardContainer}>
+                        <Text style={styles.fontStyle}>
+                            {languageSet.company_name[language]}
+                        </Text>
+                        <TextInput
+                            style={styles.inputContainer}
+                            value={companyName}
+                            onChangeText={(text) => {
+                                setCompanyName(text);
+                            }}
+                            placeholder={
+                                languageSet.enter_company_name[language]
+                            }
+                            autoCapitalize='characters'
+                            autoCompleteType='off'
+                            autoCorrect={false}
+                            autoFocus={true}
+                            clearTextOnFocus={true}
+                            keyboardType='default'
+                        />
+                    </View>
+                    <View style={styles.cardContainer}>
+                        <Text style={styles.fontStyle}>
+                            {languageSet.contact[language]}
+                        </Text>
+                        <TextInput
+                            style={styles.inputContainer}
+                            value={companyContact}
+                            onChangeText={(text) => {
+                                setCompanyContact(text);
+                            }}
+                            placeholder={languageSet.enter_contact[language]}
+                            clearTextOnFocus={true}
+                            keyboardType='numeric'
+                        />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            title={languageSet.confirm[language]}
+                            onPress={submitHandler}
+                        />
+                        <Button
+                            title={languageSet.cancel[language]}
+                            onPress={dismissHandler}
+                        />
+                    </View>
+                </Card>
+            </View>
+        </TouchableWithoutFeedback>
     );
+};
+
+const languageSet = {
+    cancel: ['Cancel', '取消'],
+    confirm: ['Confirm', '确认'],
+    enter_contact: ['Contact?', '请输入联系方式'],
+    contact: ['Contact: ', '联系方式：'],
+    company_name: ['Company name', '公司名称'],
+    enter_company_name: ['Company name?', '请输入公司名称'],
 };
 
 const styles = StyleSheet.create({

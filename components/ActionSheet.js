@@ -10,10 +10,17 @@ import {
     useActionSheet,
 } from '@expo/react-native-action-sheet';
 
+import configuration from '../constants/configuration';
+const language = configuration.language;
+
 const ActionSheet = (props) => {
     const { showActionSheetWithOptions } = useActionSheet();
     const _openActionSheet = () => {
-        const options = ['Choose from library', 'Take Photo', 'Cancel'];
+        const options = [
+            languageSet.choose_from_library[language],
+            languageSet.take_photo[language],
+            languageSet.cancel[language],
+        ];
         const destructiveButtonIndex = 0;
         const cancelButtonIndex = 2;
 
@@ -44,6 +51,12 @@ const ActionSheet = (props) => {
             {/* <Button title='Combined' onPress={_openActionSheet} /> */}
         </View>
     );
+};
+
+const languageSet = {
+    cancel: ['Cancel', '取消'],
+    take_photo: ['Take Photo', '拍摄'],
+    choose_from_library: ['Choose From Library', '从手机相册选择'],
 };
 
 const styles = StyleSheet.create({

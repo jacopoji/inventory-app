@@ -17,6 +17,9 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { Ionicons } from '@expo/vector-icons';
 import localIpAddress from '../constants/localIpAddress';
 
+import configuration from '../constants/configuration';
+const language = configuration.language;
+
 const MainScreen = (props) => {
     const [companyData, setCompanyData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -84,6 +87,7 @@ const MainScreen = (props) => {
 
     useEffect(() => {
         getData();
+        console.log(language);
         //console.log('Fetching data');
     }, []);
 
@@ -162,7 +166,9 @@ const MainScreen = (props) => {
                                     )
                                 }
                             >
-                                <Text style={styles.backTextWhite}>重命名</Text>
+                                <Text style={styles.backTextWhite}>
+                                    {languageSet.rename[language]}
+                                </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[
@@ -170,25 +176,37 @@ const MainScreen = (props) => {
                                     styles.backRightBtnRight,
                                 ]}
                                 onPress={() => {
-                                    Alert.alert('确认删除？', '', [
-                                        {
-                                            text: '取消',
-                                            onPress: () =>
-                                                console.log(item._id),
-                                            style: 'cancel',
-                                        },
-                                        {
-                                            text: '确认',
-                                            onPress: () => {
-                                                //console.log(item._id);
-                                                deleteCompany(item._id);
+                                    Alert.alert(
+                                        languageSet.confirm_delete[language],
+                                        '',
+                                        [
+                                            {
+                                                text:
+                                                    languageSet.cancel[
+                                                        language
+                                                    ],
+                                                onPress: () =>
+                                                    console.log(item._id),
+                                                style: 'cancel',
                                             },
-                                            style: 'destructive',
-                                        },
-                                    ]);
+                                            {
+                                                text:
+                                                    languageSet.confirm[
+                                                        language
+                                                    ],
+                                                onPress: () => {
+                                                    //console.log(item._id);
+                                                    deleteCompany(item._id);
+                                                },
+                                                style: 'destructive',
+                                            },
+                                        ]
+                                    );
                                 }}
                             >
-                                <Text style={styles.backTextWhite}>删除</Text>
+                                <Text style={styles.backTextWhite}>
+                                    {languageSet.delete[language]}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -207,6 +225,15 @@ const MainScreen = (props) => {
             </View>
         </View>
     );
+};
+
+const languageSet = {
+    rename: ['Rename', '重命名'],
+    confirm_delete: ['Confirm Delete?', '确认删除？'],
+    cancel: ['Cancel', '取消'],
+    confirm: ['Confirm', '确认'],
+    delete: ['Delete', '删除'],
+    title: ['HuaLong Testing App', '华龙专用内测APP'],
 };
 
 const styles = StyleSheet.create({
@@ -261,7 +288,7 @@ const styles = StyleSheet.create({
 });
 
 MainScreen.navigationOptions = ({ navigation }) => ({
-    title: '华龙专用内测APP',
+    title: languageSet.title[language],
     headerRight: () => (
         <Ionicons
             style={{ paddingRight: 20 }}

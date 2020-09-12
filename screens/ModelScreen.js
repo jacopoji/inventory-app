@@ -17,6 +17,9 @@ import { Ionicons } from '@expo/vector-icons';
 import localIpAddress from '../constants/localIpAddress';
 import { Asset } from 'expo-asset';
 
+import configuration from '../constants/configuration';
+const language = configuration.language;
+
 const ModelScreen = (props) => {
     const [image, setImage] = useState(null);
     // const [uploadImageData, setUploadImageData] = useState(null);
@@ -234,7 +237,7 @@ const ModelScreen = (props) => {
                                         }}
                                     >
                                         <Text style={styles.fontStyle}>
-                                            进价：
+                                            {languageSet.import_price[language]}
                                         </Text>
                                         <Text style={styles.fontStyle}>
                                             {modelData.primeCost}
@@ -249,7 +252,7 @@ const ModelScreen = (props) => {
                                         }}
                                     >
                                         <Text style={styles.fontStyle}>
-                                            标价：
+                                            {languageSet.label_price[language]}
                                         </Text>
                                         <Text style={styles.fontStyle}>
                                             {modelData.guidedPrice}
@@ -264,7 +267,11 @@ const ModelScreen = (props) => {
                                         }}
                                     >
                                         <Text style={styles.fontStyle}>
-                                            库存：
+                                            {
+                                                languageSet.remaining_stock[
+                                                    language
+                                                ]
+                                            }
                                         </Text>
                                         <Text
                                             style={{
@@ -314,6 +321,12 @@ ModelScreen.navigationOptions = ({ navigation }) => ({
             </ActionSheetProvider>
         ),
 });
+
+const languageSet = {
+    remaining_stock: ['Remaining', '库存'],
+    label_price: ['Label price: ', '标价：'],
+    import_price: ['Import price: ', '进价：'],
+};
 
 const styles = StyleSheet.create({
     container: {

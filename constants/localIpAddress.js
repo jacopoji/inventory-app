@@ -1,3 +1,3 @@
 export default {
-    localIp: '10.0.0.88',
+    localIp: '192.168.86.198',
 };

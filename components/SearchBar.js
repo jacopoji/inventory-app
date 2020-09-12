@@ -3,6 +3,9 @@ import { View, StyleSheet, TextInput } from 'react-native';
 
 import Color from '../constants/Color';
 
+import configuration from '../constants/configuration';
+const language = configuration.language;
+
 const SearchBar = (props) => {
     const handleSearch = () => {};
     return (
@@ -12,7 +15,7 @@ const SearchBar = (props) => {
                 autoCorrect={false}
                 onChangeText={handleSearch}
                 status='info'
-                placeholder='Search'
+                placeholder={languageSet.search[language]}
                 style={{
                     borderRadius: 25,
                     borderColor: '#333',
@@ -25,6 +28,10 @@ const SearchBar = (props) => {
             />
         </View>
     );
+};
+
+const languageSet = {
+    search: ['Search', '搜索'],
 };
 
 const styles = StyleSheet.create({

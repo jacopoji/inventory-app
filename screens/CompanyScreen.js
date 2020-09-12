@@ -20,6 +20,9 @@ import Footer from '../components/Footer';
 import { Ionicons } from '@expo/vector-icons';
 import localIpAddress from '../constants/localIpAddress';
 
+import configuration from '../constants/configuration';
+const language = configuration.language;
+
 const CompanyScreen = (props) => {
     const [addItem, setAddItem] = useState(0);
     const [dummy, setDummy] = useState(false);
@@ -80,13 +83,13 @@ const CompanyScreen = (props) => {
 
     const multiDeleteHandler = () => {
         if (elementSelected.length > 0) {
-            Alert.alert(`确认删除多个型号吗？`, '', [
+            Alert.alert(languageSet.confirm_multi_delete[language], '', [
                 {
-                    text: '取消',
+                    text: languageSet.cancel[language],
                     style: 'cancel',
                 },
                 {
-                    text: '确认',
+                    text: languageSet.confirm[language],
                     onPress: () => {
                         deleteMultiModel(elementSelected);
                         setElementSelected([]);
@@ -195,7 +198,11 @@ const CompanyScreen = (props) => {
         <View style={styles.container}>
             <View style={styles.textBar}>
                 {companyData.contact != '' && (
-                    <TextBar text={'联系方式：' + companyData.contact} />
+                    <TextBar
+                        text={
+                            languageSet.contact[language] + companyData.contact
+                        }
+                    />
                 )}
             </View>
             <View style={styles.listStyle}>
@@ -209,7 +216,8 @@ const CompanyScreen = (props) => {
                             <Card style={styles.entry}>
                                 <View style={styles.topText}>
                                     <Text style={styles.textStyle}>
-                                        型号：{item.number}
+                                        {languageSet.model[language]}
+                                        {item.number}
                                     </Text>
                                 </View>
                                 <View style={styles.bottomText}>
@@ -221,7 +229,8 @@ const CompanyScreen = (props) => {
                                                 : { color: 'black' }),
                                         }}
                                     >
-                                        剩余库存：{item.currentStock}
+                                        {languageSet.remaining_stock[language]}
+                                        {item.currentStock}
                                     </Text>
                                 </View>
                             </Card>
@@ -250,7 +259,11 @@ const CompanyScreen = (props) => {
         <View style={styles.container}>
             <View style={styles.textBar}>
                 {companyData.contact != '' && (
-                    <TextBar text={'联系方式：' + companyData.contact} />
+                    <TextBar
+                        text={
+                            languageSet.contact[language] + companyData.contact
+                        }
+                    />
                 )}
             </View>
             <View style={styles.listStyle}>
@@ -265,7 +278,8 @@ const CompanyScreen = (props) => {
                                 <Card style={styles.entry}>
                                     <View style={styles.topText}>
                                         <Text style={styles.textStyle}>
-                                            型号：{item.number}
+                                            {languageSet.model[language]}
+                                            {item.number}
                                         </Text>
                                         {itemInArray(item._id, elementSelected)
                                             ? selectedIcon
@@ -281,7 +295,12 @@ const CompanyScreen = (props) => {
                                                     : { color: 'black' }),
                                             }}
                                         >
-                                            剩余库存：{item.currentStock}
+                                            {
+                                                languageSet.remaining_stock[
+                                                    language
+                                                ]
+                                            }
+                                            {item.currentStock}
                                         </Text>
                                     </View>
                                 </Card>
@@ -311,7 +330,7 @@ const CompanyScreen = (props) => {
                                 width: '40%',
                             }}
                         >
-                            删除
+                            {languageSet.delete[language]}
                             {elementSelected.length > 0
                                 ? '(' + elementSelected.length + ')'
                                 : ' '}
@@ -332,7 +351,7 @@ const CompanyScreen = (props) => {
                                 fontSize: 28,
                             }}
                         >
-                            完成
+                            {languageSet.complete[language]}
                         </Text>
                     </TouchableWithoutFeedback>
                 </View>
@@ -361,6 +380,17 @@ CompanyScreen.navigationOptions = ({ navigation }) => ({
             />
         ),
 });
+
+const languageSet = {
+    confirm_multi_delete: ['Confirm Delete Selection?', '确认删除多个型号吗？'],
+    cancel: ['Cancel', '取消'],
+    confirm: ['Confirm', '确认'],
+    contact: ['Contact: ', '联系方式：'],
+    model: ['Model: ', '型号：'],
+    remaining_stock: ['Remaining: ', '剩余库存：'],
+    delete: ['Delete', '删除'],
+    complete: ['Complete', '完成'],
+};
 
 const styles = StyleSheet.create({
     container: {
